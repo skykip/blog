@@ -140,6 +140,6 @@ hexo d
 在 `~/.bashrc` 文件中添加
 ```bash
 alias hs='hexo clean && hexo g && hexo s'  #启动本地服务
-alias hd='hexo clean && hexo g && hexo d'  #部署博客
+alias hd='hexo clean && hexo g && hexo d && git add . && git commit -m "update" && git push -f'  #部署博客
 source ~/.bashrc #刷新配置文件
 ```
