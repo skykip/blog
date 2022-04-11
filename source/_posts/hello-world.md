@@ -29,7 +29,7 @@ $ npm -version
 $ 8.6.0
 ```
 ---
-## 2.Hexo安装
+## 2.安装Hexo
 ``` bash
 # 使用npm安装Hexo
 $ npm install hexo-cli -g
@@ -55,65 +55,91 @@ $ cd blog
 $ git clone https://github.com/zthxxx/hexo-theme-Wikitten themes/Wikitten
 ```
 ### （2）主题配置
+修改blog中的_config.yml文件
 
-
-
-
-
-通过git clone [url] themes/xxx 将主题克隆到本地，
-修改 _config.yml 中的theme：xxx
-
-``` bash
-# 使用npm安装Hexo
-$ npm install hexo-cli -g
-
-# 初始化Hexo blog
-$ hexo init blog
+```yml
+theme: Wikitten
 ```
-本地blog初始化成功，本地路径为`/Users/username/blog`
+具体配置移步到[Wikitten主题-中文文档](../../11/Wikitten主题中文文档)
 
 ---
 
+## 4.Github配置
+
+本地blog已经搭建完成，通过Github相应配置，即可将其部署到Github上。
 
 
+### （1）注册Github账号
+[Github-signup](https://github.com/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F&source=header-home)
 
-
-
-
-
-
-Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
-
-## Quick Start
-
-### Create a new post
-
-``` bash
-$ hexo new "My New Post"
+### （2）Github SSH免密码配置
+**1）设置user.name和user.email配置信息：**
+```bash
+git config --global user.name "你的GitHub用户名"
+git config --global user.email "你的GitHub注册邮箱"
 ```
 
-More info: [Writing](https://hexo.io/docs/writing.html)
-
-### Run server
-
-``` bash
-$ hexo server
+**2）查看本机是否存在`.ssh`文件**
+```bash
+$ cd ~/.ssh
+$ ls
+authorized_keys   id_rsa       known_hosts
+config            id_rsa.pub
 ```
+配置SHH免密码登录需要寻找一对`id_rsa`命名的文件，其中带`.pub` 扩展名的文件是公钥，另一个则为私钥。
+如果没有找不到这样的文件（或者根本就没有.ssh目录）可以通过`ssh-keygen`程序来创建它们。
 
-More info: [Server](https://hexo.io/docs/server.html)
-
-### Generate static files
-
-``` bash
-$ hexo generate
+```bash
+#邮箱填Github的注册邮箱
+$ ssh-keygen -t rsa -C "xx@xx.com"
 ```
+`ssh-keygen`会确认密钥的存储位置和文件名（默认是 .ssh/id_rsa）,然后他会要求你输入两次密钥口令，留空即可。所以一般选用默认，全部回车即可。
 
-More info: [Generating](https://hexo.io/docs/generating.html)
+**3）Github配置**
+登陆到GitHub，`右上角小头像->Setting->SSH and GPG keys`中，点击`new SSH key`。
+![new SSH Key](../images/SSH.jpg)
+`Title：`可以随便填写，但最好起的名字能让自己知道这个公钥是哪个设备的。
+`Key：`将上面生成的.pub文件中的所有内容复制到这里。
+点击下面的`Add SSH key`即可。
+就可实现SSH免密码访问。
 
-### Deploy to remote sites
+### （3）Github 远程仓库配置
+**1）在github上创建一个仓库`username.github.io` `username`为自己的github用户名**
 
-``` bash
-$ hexo deploy
+**2）安装hexo部署插件**
+```bash
+$ npm install hexo-deployer-git --save
 ```
+**3）配置Blog的`_comfig.yml`文件**
 
-More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
+```yml
+# 配置hexo把blog部署到github仓库里
+deploy:
+  type: git
+  repository: git@github.com:username/username.github.io.git
+  branch: master
+```
+**4）使用`Hexo d`即可将Blog部署到Github上**
+
+---
+
+## 5.Hexo常用命令（三连）
+```bash
+#打开 Git bash
+#清除生成的网页文件
+hexo clean
+#生成网页文件
+hexo g
+#上传网页文件到 Github page
+hexo d
+```
+---
+
+## 6.快捷命令
+通过使用`alias`，触发一些命令的集合
+在 `~/.bashrc` 文件中添加
+```bash
+alias hs='hexo clean && hexo g && hexo s'  #启动本地服务
+alias hd='hexo clean && hexo g && hexo d'  #部署博客
+source ~/.bashrc #刷新配置文件
+```
