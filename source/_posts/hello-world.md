@@ -127,11 +127,11 @@ deploy:
 ```bash
 #打开 Git bash
 #清除生成的网页文件
-hexo clean
+$ hexo clean
 #生成网页文件
-hexo g
+$ hexo g
 #上传网页文件到 Github page
-hexo d
+$ hexo d
 ```
 ---
 
@@ -139,7 +139,7 @@ hexo d
 通过使用`alias`，触发一些命令的集合
 在 `~/.bashrc` 文件中添加
 ```bash
-alias hs='hexo clean && hexo g && hexo s'  #启动本地服务
-alias hd='hexo clean && hexo g && hexo d && git add . && git commit -m "update" && git push -f'  #部署博客
-source ~/.bashrc #刷新配置文件
+$ alias hs='hexo clean && hexo g && hexo s'  #启动本地服务
+$ alias hd='hexo clean && hexo g && hexo d && git add . && git commit -m "update" && git push -f'  #部署博客
+$ source ~/.bashrc #刷新配置文件
 ```
